@@ -6,9 +6,9 @@ BUILD_DIR ?= build
 TERRAFORM_DIR ?= terraform
 WEBSITE ?= demo-hotel
 REGION ?= ap-south-1
-DEPLOYMENT ?= dev
-TFVARS ?= values/$(WEBSITE)/$(REGION)/$(DEPLOYMENT).tfvars
-BACKEND_CONFIG ?= values/$(WEBSITE)/$(REGION)/$(DEPLOYMENT).backend.hcl
+SUBDOMAIN ?= www
+TFVARS ?= values/$(WEBSITE)/$(REGION)/$(SUBDOMAIN).tfvars
+BACKEND_CONFIG ?= values/$(WEBSITE)/$(REGION)/$(SUBDOMAIN).backend.hcl
 
 help:
 	@echo "Targets:"
@@ -21,7 +21,7 @@ help:
 	@echo "  make build"
 	@echo "  make terraform-fmt"
 	@echo "  make terraform-validate"
-	@echo "  make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 DEPLOYMENT=dev"
+	@echo "  make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www"
 	@echo "  make clean"
 
 install:

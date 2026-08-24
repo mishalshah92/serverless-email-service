@@ -17,3 +17,8 @@ output "dlq_url" {
   description = "SQS DLQ URL."
   value       = aws_sqs_queue.dlq.url
 }
+
+output "turnstile_sitekey" {
+  description = "Public Turnstile sitekey for the static frontend."
+  value       = try(cloudflare_turnstile_widget.main[0].sitekey, null)
+}

@@ -34,36 +34,63 @@ Create or confirm:
 - Terraform lock DynamoDB table
 - SES verified domain or email identity
 - SES DKIM/SPF/DMARC DNS records
-- Cloudflare Turnstile site
-- SSM SecureString parameters for secrets
+- Cloudflare API token if Terraform will create the Turnstile widget
+- SSM SecureString parameters for SMTP secrets
 
 ## Website Values
 
-Values are organized by website, region, and deployment:
+Values are organized by website, region, and subdomain:
 
 ```text
-terraform/values/{website}/{region}/{deployment-name}.tfvars
+terraform/values/{website}/{region}/{subdomain}.tfvars
 ```
 
 Current examples:
 
 ```text
-terraform/values/demo-hotel/ap-south-1/dev.tfvars
-terraform/values/demo-hotel/ap-south-1/prod.tfvars
+terraform/values/demo-hotel/ap-south-1/www.tfvars
+terraform/values/demo-hotel/ap-south-1/book.tfvars
 ```
 
 Store non-secret values only.
 
-Use `website_name` and `deployment_name` inside each tfvars file. For example, `terraform/values/demo-hotel/ap-south-1/dev.tfvars` sets:
+Use `website_name` and `subdomain` inside each tfvars file. For example, `terraform/values/demo-hotel/ap-south-1/www.tfvars` sets:
 
 ```hcl
-website_name    = "demo-hotel"
-deployment_name = "dev"
+website_name = "demo-hotel"
+subdomain    = "www"
 ```
 
 ## Secret Parameters
 
-Create the Turnstile secret:
+## Turnstile
+
+Terraform can create the Cloudflare Turnstile widget and write its generated secret into AWS SSM.
+
+Set these non-secret values in the website tfvars file:
+
+```hcl
+cloudflare_account_id    = "your-cloudflare-account-id"
+turnstile_widget_enabled = true
+turnstile_widget_domain  = "www.example.com"
+turnstile_widget_mode    = "managed"
+```
+
+Supply the Cloudflare API token outside the repo:
+
+```sh
+export TF_VAR_cloudflare_api_token="replace-with-cloudflare-token"
+```
+
+The token needs Cloudflare Turnstile edit permissions. Terraform will store the generated secret in:
+
+```text
+turnstile_secret_parameter_name
+```
+
+Important: the Turnstile secret will also exist in Terraform state because Terraform receives it from Cloudflare before writing it to SSM. Keep remote state encrypted and tightly access-controlled.
+
+If you do not want Terraform to manage Turnstile, create the SSM secret manually:
 
 ```sh
 aws ssm put-parameter \
@@ -95,19 +122,19 @@ Initialize dev:
 
 ```sh
 cd terraform
-terraform init -backend-config=values/demo-hotel/ap-south-1/dev.backend.hcl
+terraform init -backend-config=values/demo-hotel/ap-south-1/www.backend.hcl
 ```
 
-Plan dev:
+Plan:
 
 ```sh
-terraform plan -var-file=values/demo-hotel/ap-south-1/dev.tfvars
+terraform plan -var-file=values/demo-hotel/ap-south-1/www.tfvars
 ```
 
 Apply only after reviewing the plan:
 
 ```sh
-terraform apply -var-file=values/demo-hotel/ap-south-1/dev.tfvars
+terraform apply -var-file=values/demo-hotel/ap-south-1/www.tfvars
 ```
 
 ## Backend Configuration
@@ -115,15 +142,15 @@ terraform apply -var-file=values/demo-hotel/ap-south-1/dev.tfvars
 Backend config lives in:
 
 ```text
-terraform/values/demo-hotel/ap-south-1/dev.backend.hcl
-terraform/values/demo-hotel/ap-south-1/prod.backend.hcl
+terraform/values/demo-hotel/ap-south-1/www.backend.hcl
+terraform/values/demo-hotel/ap-south-1/book.backend.hcl
 ```
 
-Environment values live in:
+Website values live in:
 
 ```text
-terraform/values/demo-hotel/ap-south-1/dev.tfvars
-terraform/values/demo-hotel/ap-south-1/prod.tfvars
+terraform/values/demo-hotel/ap-south-1/www.tfvars
+terraform/values/demo-hotel/ap-south-1/book.tfvars
 ```
 
 Only commit `terraform/values/**/*.tfvars` when they contain non-secret values.

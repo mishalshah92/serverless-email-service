@@ -24,7 +24,7 @@ Main AWS services:
 - SQS + DLQ
 - DynamoDB
 - SES
-- SSM Parameter Store for SMTP credentials
+- SSM Parameter Store for Turnstile and SMTP secrets
 - CloudWatch logs and DLQ alarm
 
 ## Repository Layout
@@ -93,13 +93,13 @@ terraform/
 `- values/
    `- demo-hotel/
       `- ap-south-1/
-         |- dev.backend.hcl
-         |- dev.tfvars
-         |- prod.backend.hcl
-         `- prod.tfvars
+         |- book.backend.hcl
+         |- book.tfvars
+         |- www.backend.hcl
+         `- www.tfvars
 ```
 
-First deployment still needs manual prerequisites: remote state bucket/table, SES identity, Turnstile secret, and deployment review. Do not run `terraform apply` until a plan has been inspected.
+First deployment still needs manual prerequisites: remote state bucket/table, SES identity, Cloudflare API token if managing Turnstile, and deployment review. Do not run `terraform apply` until a plan has been inspected.
 
 ## Monitoring
 
@@ -109,6 +109,6 @@ The Terraform MVP creates CloudWatch log groups and a DLQ alarm. Application log
 
 - No admin CLI/dashboard yet.
 - Quotas are modeled but not fully persisted/enforced in DynamoDB yet.
-- Turnstile uses an SSM SecureString parameter name; create the parameter before deployment.
+- Terraform can create the Turnstile widget and store its generated secret in SSM. The secret will also exist in Terraform state.
 - Terraform IAM is intentionally compact and should be tightened further before production.
 - No deployment has been run.
