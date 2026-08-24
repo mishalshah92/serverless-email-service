@@ -33,7 +33,7 @@ Main AWS services:
 .
 |- src/email_service/        Python package
 |- terraform/                Terraform root and modules
-|- docs/                     Architecture, ADRs, operations
+|- docs/                     Architecture and operations
 |- tests/                    Unit tests and fixtures
 |- examples/static-site/     Plain static frontend example
 |- examples/demo-tenant.json Safe sample tenant configuration
@@ -46,7 +46,7 @@ Main AWS services:
 ## Prerequisites
 
 - Python 3.12+
-- Terraform 1.10.x
+- Terraform 1.15.x
 - GNU Make, or run the commands from the Makefile manually
 - AWS credentials only for Terraform plan/apply or real Lambda execution
 
