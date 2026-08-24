@@ -117,3 +117,7 @@ The Terraform MVP creates CloudWatch log groups and a DLQ alarm. Application log
 - Terraform can create the Turnstile widget and store its generated secret in SSM. The secret will also exist in Terraform state.
 - Terraform IAM is intentionally compact and should be tightened further before production.
 - No deployment has been run.
+
+## License
+
+Proprietary. All rights reserved. No permission is granted to use, copy, modify, distribute, host, deploy, or operate this project without a separate written agreement from the copyright holder. See [LICENSE](LICENSE).
