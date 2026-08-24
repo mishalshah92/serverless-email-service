@@ -1,0 +1,71 @@
+{
+  "tenant_id": "demo-hotel",
+  "name": "Demo Hotel",
+  "sites": [
+    {
+      "site_id": "demo-hotel",
+      "public_site_key": "public-demo-site",
+      "allowed_origins": [
+        "https://demo.example",
+        "https://www.demo.example"
+      ],
+      "forms": [
+        {
+          "form_id": "contact",
+          "template_id": "contact-v1",
+          "provider_id": "primary-ses",
+          "recipient": "owner@example.test",
+          "sender": "Website Enquiry <website@example.test>",
+          "subject": "New contact form submission",
+          "reply_to_field": "email",
+          "fields": [
+            { "name": "name", "type": "string", "required": true, "max_length": 100 },
+            { "name": "email", "type": "email", "required": true },
+            { "name": "phone", "type": "string", "required": false, "max_length": 40 },
+            { "name": "message", "type": "textarea", "required": true, "max_length": 1000 }
+          ]
+        },
+        {
+          "form_id": "booking",
+          "template_id": "booking-v1",
+          "provider_id": "primary-ses",
+          "recipient": "bookings@example.test",
+          "sender": "Website Booking <website@example.test>",
+          "subject": "New booking enquiry",
+          "reply_to_field": "email",
+          "fields": [
+            { "name": "name", "type": "string", "required": true, "max_length": 100 },
+            { "name": "email", "type": "email", "required": true },
+            { "name": "phone", "type": "string", "required": false, "max_length": 40 },
+            { "name": "check_in", "type": "date", "required": true },
+            { "name": "check_out", "type": "date", "required": true },
+            { "name": "guests", "type": "integer", "required": true, "min_value": 1, "max_value": 20 },
+            { "name": "notes", "type": "textarea", "required": false, "max_length": 1000 }
+          ]
+        }
+      ]
+    }
+  ],
+  "providers": [
+    {
+      "provider_id": "primary-ses",
+      "provider_type": "ses"
+    }
+  ],
+  "templates": [
+    {
+      "template_id": "contact-v1",
+      "version": "v1",
+      "subject": "Contact from ${name}",
+      "text_body": "Name: ${name}\nEmail: ${email}\nMessage:\n${message}",
+      "html_body": "<h1>Contact form</h1><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p>${message}</p>"
+    },
+    {
+      "template_id": "booking-v1",
+      "version": "v1",
+      "subject": "Booking enquiry from ${name}",
+      "text_body": "Name: ${name}\nEmail: ${email}\nCheck-in: ${check_in}\nCheck-out: ${check_out}\nGuests: ${guests}\nNotes:\n${notes}",
+      "html_body": "<h1>Booking enquiry</h1><p>${name}</p><p>${email}</p><p>${check_in} to ${check_out}</p><p>Guests: ${guests}</p><p>${notes}</p>"
+    }
+  ]
+}
