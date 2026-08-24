@@ -1,0 +1,39 @@
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Local environment files
+.env
+.env.*
+
+# Python local files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+*.egg-info/
+
+# Terraform local files
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+!terraform/values/**/*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Generated artifacts
+build/
+dist/
+*.zip
