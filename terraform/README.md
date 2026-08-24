@@ -20,10 +20,20 @@ Initialize the `www` subdomain with:
 
 ```sh
 terraform init -backend-config=values/demo-hotel/ap-south-1/www.backend.hcl
-terraform plan -var-file=values/demo-hotel/ap-south-1/www.tfvars
+terraform plan \
+  -var website_name=demo-hotel \
+  -var aws_region=ap-south-1 \
+  -var subdomain=www \
+  -var-file values/demo-hotel/ap-south-1/www.tfvars
 ```
 
-Use the matching subdomain files for each website deployment after reviewing the plan.
+The Makefile wraps those inline variables:
+
+```sh
+make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
+```
+
+Use the matching subdomain files for each website deployment after reviewing the plan. Do not repeat `website_name`, `aws_region`, or `subdomain` in tfvars files; the path and command parameters are the source of truth.
 
 ## Turnstile
 

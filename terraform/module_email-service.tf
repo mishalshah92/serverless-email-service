@@ -12,5 +12,5 @@ module "email_service" {
   turnstile_widget_domain         = var.turnstile_widget_domain
   turnstile_widget_mode           = var.turnstile_widget_mode
   cloudflare_account_id           = var.cloudflare_account_id
-  tags                            = var.tags
+  tags                            = local.common_tags
 }

@@ -54,12 +54,13 @@ terraform/values/demo-hotel/ap-south-1/book.tfvars
 
 Store non-secret values only.
 
-Use `website_name` and `subdomain` inside each tfvars file. For example, `terraform/values/demo-hotel/ap-south-1/www.tfvars` sets:
+The path and Makefile parameters are the source of truth for `website_name`, `aws_region`, and `subdomain`. Do not repeat them in the tfvars file. For example:
 
-```hcl
-website_name = "demo-hotel"
-subdomain    = "www"
+```sh
+make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
 ```
+
+passes `website_name`, `aws_region`, and `subdomain` to Terraform as inline variables.
 
 ## Secret Parameters
 
@@ -94,7 +95,7 @@ If you do not want Terraform to manage Turnstile, create the SSM secret manually
 
 ```sh
 aws ssm put-parameter \
-  --name "/static-website-email-service/dev/turnstile/secret" \
+  --name "/static-website-email-service/demo-hotel/www/turnstile/secret" \
   --type SecureString \
   --value "replace-with-real-secret" \
   --overwrite
@@ -103,11 +104,11 @@ aws ssm put-parameter \
 For SMTP:
 
 ```sh
-aws ssm put-parameter --name "/static-website-email-service/dev/providers/demo-hotel/primary-smtp/host" --type String --value "smtp.gmail.com" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/dev/providers/demo-hotel/primary-smtp/port" --type String --value "587" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/dev/providers/demo-hotel/primary-smtp/username" --type SecureString --value "website@example.com" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/dev/providers/demo-hotel/primary-smtp/password" --type SecureString --value "replace-with-real-password" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/dev/providers/demo-hotel/primary-smtp/security" --type String --value "starttls" --overwrite
+aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/host" --type String --value "smtp.gmail.com" --overwrite
+aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/port" --type String --value "587" --overwrite
+aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/username" --type SecureString --value "website@example.com" --overwrite
+aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/password" --type SecureString --value "replace-with-real-password" --overwrite
+aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/security" --type String --value "starttls" --overwrite
 ```
 
 ## Terraform Commands
@@ -118,7 +119,14 @@ Build the Lambda package first:
 make build
 ```
 
-Initialize dev:
+The easiest path is the Makefile, which derives the tfvars and backend config paths and passes `website_name`, `aws_region`, and `subdomain` inline:
+
+```sh
+make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
+make terraform-apply WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
+```
+
+Or run Terraform directly:
 
 ```sh
 cd terraform
@@ -128,13 +136,21 @@ terraform init -backend-config=values/demo-hotel/ap-south-1/www.backend.hcl
 Plan:
 
 ```sh
-terraform plan -var-file=values/demo-hotel/ap-south-1/www.tfvars
+terraform plan \
+  -var website_name=demo-hotel \
+  -var aws_region=ap-south-1 \
+  -var subdomain=www \
+  -var-file values/demo-hotel/ap-south-1/www.tfvars
 ```
 
 Apply only after reviewing the plan:
 
 ```sh
-terraform apply -var-file=values/demo-hotel/ap-south-1/www.tfvars
+terraform apply \
+  -var website_name=demo-hotel \
+  -var aws_region=ap-south-1 \
+  -var subdomain=www \
+  -var-file values/demo-hotel/ap-south-1/www.tfvars
 ```
 
 ## Backend Configuration

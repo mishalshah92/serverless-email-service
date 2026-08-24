@@ -104,6 +104,8 @@ terraform/
 
 First deployment still needs manual prerequisites: remote state bucket/table, SES identity, Cloudflare API token if managing Turnstile, and deployment review. Do not run `terraform apply` until a plan has been inspected.
 
+Use `make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www` so the path selects the right tfvars/backend files and the same values are passed to Terraform inline.
+
 ## Monitoring
 
 The Terraform MVP creates CloudWatch log groups and a DLQ alarm. Application logs should use request IDs and provider message IDs and should avoid full form payloads and email bodies.
