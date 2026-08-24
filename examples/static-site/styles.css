@@ -1,0 +1,238 @@
+:root {
+  --ink: #14213d;
+  --muted: #667085;
+  --paper: #fffaf2;
+  --gold: #d6a548;
+  --sea: #1c6e73;
+  --coral: #d95d39;
+}
+
+body {
+  background: #f7f8fb;
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.navbar {
+  background: rgba(20, 33, 61, 0.82);
+  backdrop-filter: blur(16px);
+}
+
+.navbar-brand,
+.navbar-brand:hover {
+  color: #fff;
+  font-weight: 700;
+}
+
+.brand-mark {
+  align-items: center;
+  background: var(--gold);
+  border-radius: 50%;
+  color: var(--ink);
+  display: inline-flex;
+  font-weight: 800;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+.hero {
+  align-items: end;
+  background:
+    linear-gradient(90deg, rgba(20, 33, 61, 0.88), rgba(20, 33, 61, 0.34)),
+    url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=80")
+      center / cover;
+  display: flex;
+  min-height: 76vh;
+  padding: 9rem 0 4rem;
+}
+
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.availability-panel {
+  align-items: center;
+  background: rgba(255, 250, 242, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 0.75rem;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.18);
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem;
+}
+
+.availability-panel i {
+  color: var(--gold);
+  font-size: 2rem;
+}
+
+.panel-label {
+  color: var(--muted);
+  display: block;
+  font-size: 0.82rem;
+}
+
+.section-band {
+  background: #fff;
+  padding: 4rem 0;
+}
+
+.feature-tile {
+  border-left: 4px solid var(--sea);
+  height: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.feature-tile i {
+  color: var(--coral);
+  font-size: 1.8rem;
+}
+
+.feature-tile h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 1rem 0 0.5rem;
+}
+
+.feature-tile p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.forms-section {
+  padding: 5rem 0;
+}
+
+.section-heading {
+  margin: 0 auto 2rem;
+  max-width: 46rem;
+  text-align: center;
+}
+
+.form-tabs {
+  background: #e9eef3;
+  border-radius: 999px;
+  gap: 0.25rem;
+  margin: 0 auto 1.5rem;
+  max-width: max-content;
+  padding: 0.35rem;
+}
+
+.form-tabs .nav-link {
+  align-items: center;
+  border-radius: 999px;
+  color: var(--ink);
+  display: inline-flex;
+  font-weight: 700;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+}
+
+.form-tabs .nav-link.active {
+  background: #fff;
+  box-shadow: 0 0.4rem 1.2rem rgba(20, 33, 61, 0.12);
+  color: var(--sea);
+}
+
+.form-shell {
+  background: #fff;
+  border: 1px solid #e4e7ec;
+  border-radius: 0.75rem;
+  box-shadow: 0 1.5rem 4rem rgba(20, 33, 61, 0.09);
+  margin: 0 auto;
+  max-width: 58rem;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.form-label {
+  color: #344054;
+  font-weight: 700;
+}
+
+.form-control {
+  border-color: #d0d5dd;
+}
+
+.form-control:focus {
+  border-color: var(--sea);
+  box-shadow: 0 0 0 0.25rem rgba(28, 110, 115, 0.14);
+}
+
+.turnstile-placeholder {
+  align-items: center;
+  background: var(--paper);
+  border: 1px dashed #d6a548;
+  border-radius: 0.75rem;
+  color: #7a5b16;
+  display: flex;
+  font-weight: 700;
+  gap: 0.75rem;
+  min-height: 4rem;
+  padding: 1rem;
+}
+
+.form-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--sea);
+  --bs-btn-border-color: var(--sea);
+  --bs-btn-hover-bg: #155b60;
+  --bs-btn-hover-border-color: #155b60;
+  --bs-btn-active-bg: #124f53;
+  --bs-btn-active-border-color: #124f53;
+  font-weight: 800;
+}
+
+.form-status {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.form-status.is-success {
+  color: #087443;
+}
+
+.form-status.is-error {
+  color: #b42318;
+}
+
+.site-footer {
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.78);
+  padding: 2rem 0;
+}
+
+@media (max-width: 575.98px) {
+  .hero {
+    min-height: 82vh;
+  }
+
+  .form-tabs {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .form-tabs .nav-item {
+    flex: 1;
+  }
+
+  .form-tabs .nav-link {
+    justify-content: center;
+    width: 100%;
+  }
+}
