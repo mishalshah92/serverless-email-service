@@ -1,1 +1,0 @@
-"""API Gateway Lambda entrypoints."""

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from email_service.core.queue_message import parse_job, serialize_job
-from email_service.models.domain import QueuedEmailJob
+from common.core.queue_message import parse_job, serialize_job
+from common.models.domain import QueuedEmailJob
 
 
 def test_queue_message_round_trip_has_no_credentials() -> None:

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from email_service.core.errors import ValidationError
-from email_service.core.validation import validate_form_payload
+from common.core.errors import ValidationError
+from common.core.validation import validate_form_payload
 from tests.fixtures.demo_config import demo_config
 
 

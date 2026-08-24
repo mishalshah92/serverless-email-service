@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from email_service.api import handler
+from form_intake_lambda import main as handler
 
 
 class FakeService:

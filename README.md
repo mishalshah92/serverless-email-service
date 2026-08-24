@@ -31,7 +31,10 @@ Main AWS services:
 
 ```text
 .
-|- src/email_service/        Python package
+|- src/common/               Shared domain, adapters, and utilities
+|- src/form_intake_lambda/   API Gateway Lambda entrypoint
+|- src/email_worker_lambda/  SQS worker Lambda entrypoint
+|- src/email_events_lambda/  SES event Lambda entrypoint
 |- terraform/                Terraform root and modules
 |- docs/                     Architecture and operations
 |- tests/                    Unit tests and fixtures

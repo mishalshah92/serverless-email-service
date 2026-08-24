@@ -4,11 +4,11 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from email_service.core.errors import SecurityError
-from email_service.core.service import EmailWorkerService, FormIntakeService
-from email_service.models.domain import MailMessage, ProviderType, QueuedEmailJob, SendResult
-from email_service.providers.base import MailProvider
-from email_service.repositories.memory import InMemorySubmissionRepository
+from common.core.errors import SecurityError
+from common.core.service import EmailWorkerService, FormIntakeService
+from common.models.domain import MailMessage, ProviderType, QueuedEmailJob, SendResult
+from common.providers.base import MailProvider
+from common.repositories.memory import InMemorySubmissionRepository
 from tests.fixtures.demo_config import demo_config
 
 

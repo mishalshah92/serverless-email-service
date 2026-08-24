@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from email_service.templates.renderer import render_mail_message
+from common.templates.renderer import render_mail_message
 from tests.fixtures.demo_config import demo_config
 
 

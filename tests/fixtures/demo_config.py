@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from email_service.models.domain import (
+from common.models.domain import (
     EmailTemplateDefinition,
     FieldDefinition,
     FieldType,
@@ -9,7 +9,7 @@ from email_service.models.domain import (
     MailProviderDefinition,
     ProviderType,
 )
-from email_service.repositories.memory import InMemoryConfigRepository
+from common.repositories.memory import InMemoryConfigRepository
 
 
 def demo_config() -> InMemoryConfigRepository:

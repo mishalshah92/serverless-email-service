@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from email_service.events.parser import parse_ses_event
-from email_service.models.domain import DeliveryEventType
+from common.events.parser import parse_ses_event
+from common.models.domain import DeliveryEventType
 
 
 def test_parse_ses_bounce_event() -> None:

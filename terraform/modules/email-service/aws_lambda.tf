@@ -2,7 +2,7 @@ resource "aws_lambda_function" "intake" {
   function_name = "${local.name}-form-intake"
   role          = aws_iam_role.lambda.arn
   runtime       = "python3.12"
-  handler       = "email_service.api.handler.handle"
+  handler       = "form_intake_lambda.main.handle"
   filename      = var.lambda_package_path
   timeout       = 15
   memory_size   = 128
@@ -23,7 +23,7 @@ resource "aws_lambda_function" "worker" {
   function_name = "${local.name}-email-worker"
   role          = aws_iam_role.lambda.arn
   runtime       = "python3.12"
-  handler       = "email_service.worker.handler.handle"
+  handler       = "email_worker_lambda.main.handle"
   filename      = var.lambda_package_path
   timeout       = 30
   memory_size   = 128
@@ -42,7 +42,7 @@ resource "aws_lambda_function" "events" {
   function_name = "${local.name}-email-events"
   role          = aws_iam_role.lambda.arn
   runtime       = "python3.12"
-  handler       = "email_service.events.handler.handle"
+  handler       = "email_events_lambda.main.handle"
   filename      = var.lambda_package_path
   timeout       = 15
   memory_size   = 128
