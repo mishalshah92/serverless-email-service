@@ -45,6 +45,16 @@ resource "aws_iam_role_policy" "lambda" {
         Resource = aws_sqs_queue.main.arn
       },
       {
+        Effect = "Allow"
+        Action = [
+          "sqs:ChangeMessageVisibility",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes",
+          "sqs:ReceiveMessage"
+        ]
+        Resource = aws_sqs_queue.main.arn
+      },
+      {
         Effect   = "Allow"
         Action   = ["ses:SendEmail"]
         Resource = "*"
