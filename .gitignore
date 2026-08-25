@@ -8,6 +8,7 @@ Thumbs.db
 # Local environment files
 .env
 .env.*
+*.env
 
 # Python local files
 __pycache__/
@@ -23,6 +24,8 @@ venv/
 **/.terraform/
 *.tfstate
 *.tfstate.*
+tfplan
+*.tfplan
 crash.log
 crash.*.log
 *.tfvars
