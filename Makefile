@@ -44,7 +44,6 @@ typecheck:
 check: lint typecheck test
 
 build:
-	mkdir -p $(BUILD_DIR)
 	$(PYTHON) scripts/build_lambda.py
 
 package: build
@@ -62,5 +61,4 @@ terraform-apply:
 	cd $(TERRAFORM_DIR) && terraform init -backend-config=$(BACKEND_CONFIG) && terraform apply $(TF_INLINE_VARS) -var-file $(TFVARS)
 
 clean:
-	rm -rf $(BUILD_DIR)
-	rm -rf .pytest_cache .ruff_cache .mypy_cache
+	$(PYTHON) scripts/clean.py

@@ -157,7 +157,7 @@ def _address(raw: str) -> MailAddress:
 
 
 def _boto3_client(service: str) -> Any:
-    import boto3  # type: ignore[import-not-found]
+    import boto3
 
     return boto3.client(service)
 

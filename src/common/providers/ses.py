@@ -48,6 +48,6 @@ class SesMailProvider:
 
 
 def _ses_client() -> Any:
-    import boto3  # type: ignore[import-not-found]
+    import boto3
 
     return boto3.client("sesv2")
