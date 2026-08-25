@@ -33,7 +33,15 @@ The Makefile wraps those inline variables:
 make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
 ```
 
+The same wrapper can be run directly:
+
+```sh
+python ../scripts/terraform_deploy.py plan --website demo-hotel --region ap-south-1 --subdomain www
+```
+
 Use the matching subdomain files for each website deployment after reviewing the plan. Do not repeat `website_name`, `aws_region`, or `subdomain` in tfvars files; the path and command parameters are the source of truth.
+
+Template source files are kept outside Terraform under `config/websites/{website}/templates`. A later Terraform step will read those JSON files and publish them to DynamoDB.
 
 ## Turnstile
 

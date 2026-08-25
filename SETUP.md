@@ -37,6 +37,47 @@ Create or confirm:
 - Cloudflare API token if Terraform will create the Turnstile widget
 - SSM SecureString parameters for SMTP secrets
 
+## Local Developer Setup
+
+Run the initial local setup:
+
+```sh
+python scripts/setup.py
+```
+
+This installs dev dependencies, runs checks, and builds the Lambda package. To skip dependency installation:
+
+```sh
+python scripts/setup.py --skip-install
+```
+
+The Makefile wraps the same script:
+
+```sh
+make setup
+```
+
+## Terraform State Bootstrap
+
+Create the remote Terraform state bucket and lock table with the AWS helper. The first command is a dry run and only prints AWS CLI commands:
+
+```sh
+python scripts/aws_manual_setup.py state \
+  --bucket ms92-tf-states \
+  --table ms92-tf-states \
+  --region ap-south-1
+```
+
+Run it for real only after reviewing the printed commands:
+
+```sh
+python scripts/aws_manual_setup.py state \
+  --bucket ms92-tf-states \
+  --table ms92-tf-states \
+  --region ap-south-1 \
+  --apply
+```
+
 ## Website Values
 
 Values are organized by website, region, and subdomain:
@@ -62,7 +103,84 @@ make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
 
 passes `website_name`, `aws_region`, and `subdomain` to Terraform as inline variables.
 
+Create a new values/backend pair with:
+
+```sh
+python scripts/new_deployment.py \
+  --website demo-hotel \
+  --region ap-south-1 \
+  --subdomain contact \
+  --state-bucket ms92-tf-states \
+  --state-table ms92-tf-states
+```
+
+The Makefile wrapper is:
+
+```sh
+make new-deployment WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=contact
+```
+
 ## Secret Parameters
+
+## Email Templates
+
+Store source-controlled templates here:
+
+```text
+config/websites/{website}/templates/{template_id}.json
+```
+
+Create one with:
+
+```sh
+python scripts/new_template.py \
+  --website demo-hotel \
+  --template-id quote-v1 \
+  --preset quote
+```
+
+The Makefile wrapper is:
+
+```sh
+make new-template WEBSITE=demo-hotel TEMPLATE_ID=quote-v1 TEMPLATE_PRESET=quote
+```
+
+Each file contains:
+
+```json
+{
+  "template_id": "quote-v1",
+  "version": "v1",
+  "subject": "Quote request from ${name}",
+  "text_body": "Name: ${name}\nEmail: ${email}\nProject:\n${message}",
+  "html_body": "<h1>Quote request</h1><p>${name}</p><p>${email}</p><p>${message}</p>"
+}
+```
+
+The API does not select templates directly. A trusted form config maps the API call to a template:
+
+```text
+POST /v1/forms/contact -> FORM#contact -> template_id contact-v1
+```
+
+Terraform will later publish these JSON files into DynamoDB as:
+
+```text
+pk = TENANT#{tenant_id}
+sk = TEMPLATE#{template_id}
+```
+
+## SES Identity
+
+Create an SES identity with:
+
+```sh
+python scripts/aws_manual_setup.py ses-identity \
+  --identity example.com \
+  --region ap-south-1
+```
+
+For domain identities, SES still returns DNS records that must be added wherever DNS is hosted.
 
 ## Turnstile
 
@@ -94,22 +212,24 @@ Important: the Turnstile secret will also exist in Terraform state because Terra
 If you do not want Terraform to manage Turnstile, create the SSM secret manually:
 
 ```sh
-aws ssm put-parameter \
+python scripts/aws_manual_setup.py turnstile-secret \
   --name "/static-website-email-service/demo-hotel/www/turnstile/secret" \
-  --type SecureString \
-  --value "replace-with-real-secret" \
-  --overwrite
+  --region ap-south-1
 ```
 
 For SMTP:
 
 ```sh
-aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/host" --type String --value "smtp.gmail.com" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/port" --type String --value "587" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/username" --type SecureString --value "website@example.com" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/password" --type SecureString --value "replace-with-real-password" --overwrite
-aws ssm put-parameter --name "/static-website-email-service/demo-hotel/www/providers/primary-smtp/security" --type String --value "starttls" --overwrite
+python scripts/aws_manual_setup.py smtp-provider \
+  --prefix "/static-website-email-service/demo-hotel/www/providers/primary-smtp" \
+  --region ap-south-1 \
+  --host smtp.gmail.com \
+  --port 587 \
+  --username website@example.com \
+  --security starttls
 ```
+
+The scripts prompt for secret values so passwords are not stored in shell history. For CI or one-off automation, pass `--value-env` or `--password-env` and provide the secret through an environment variable.
 
 ## Terraform Commands
 
@@ -124,6 +244,13 @@ The easiest path is the Makefile, which derives the tfvars and backend config pa
 ```sh
 make terraform-plan WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
 make terraform-apply WEBSITE=demo-hotel REGION=ap-south-1 SUBDOMAIN=www
+```
+
+The direct Python wrapper is:
+
+```sh
+python scripts/terraform_deploy.py plan --website demo-hotel --region ap-south-1 --subdomain www
+python scripts/terraform_deploy.py apply --website demo-hotel --region ap-south-1 --subdomain www
 ```
 
 Or run Terraform directly:

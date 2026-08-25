@@ -1,0 +1,7 @@
+{
+  "html_body": "<h1>Booking enquiry</h1><p>${name}</p><p>${email}</p><p>${check_in} to ${check_out}</p><p>Guests: ${guests}</p><p>${notes}</p>",
+  "subject": "Booking enquiry from ${name}",
+  "template_id": "booking-v1",
+  "text_body": "Name: ${name}\nEmail: ${email}\nCheck-in: ${check_in}\nCheck-out: ${check_out}\nGuests: ${guests}\nNotes:\n${notes}",
+  "version": "v1"
+}

@@ -1,0 +1,7 @@
+{
+  "html_body": "<h1>Contact form</h1><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p>${message}</p>",
+  "subject": "Contact from ${name}",
+  "template_id": "contact-v1",
+  "text_body": "Name: ${name}\nEmail: ${email}\nMessage:\n${message}",
+  "version": "v1"
+}
